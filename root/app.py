@@ -19,8 +19,8 @@ def get_users_log_pass():
     users = db.fetchAllPlayers()
     users_data = []
     for user in users:
-        user_dict = {}
-        user_dict["player_id"] = str(user.player_id)
+        user_dict = dict()
+        user_dict["player_id"] = user.player_username
         user_dict["password"] = user.passwrd
         users_data.append(user_dict)
     return users_data
