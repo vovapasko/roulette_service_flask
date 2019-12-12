@@ -9,15 +9,14 @@ app = Flask(__name__)
 SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
 
-# db = Database()
-# app.config[
-#     'SQLALCHEMY_DATABASE_URI'] = db.cstr
+db = Database()
+app.config[
+    'SQLALCHEMY_DATABASE_URI'] = db.cstr
 
 
 # Route for handling the login page logic
 def get_users_log_pass():
-    # users = db.fetchAllPlayers()
-    users = None
+    users = db.fetchAllPlayers()
     users_data = []
     for user in users:
         user_dict = {}
