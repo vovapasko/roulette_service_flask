@@ -10,8 +10,8 @@ SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
 
 # db = Database()
-app.config[
-    'SQLALCHEMY_DATABASE_URI'] = db.cstr
+# app.config[
+#     'SQLALCHEMY_DATABASE_URI'] = db.cstr
 
 
 # Route for handling the login page logic
