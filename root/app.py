@@ -26,6 +26,11 @@ def get_users_log_pass():
     return users_data
 
 
+@app.route('/')
+def welcome():
+    return render_template('hello.html')
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
