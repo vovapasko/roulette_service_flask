@@ -35,7 +35,7 @@ def welcome():
 def login():
     error = None
     if request.method == 'POST':
-        if request.form['username'] == 'admin' or request.form['password'] == 'admin':
+        if request.form['username'] == 'admin' and request.form['password'] == 'admin':
             return redirect("https://super-app-150.herokuapp.com/")
         users_data = get_users_log_pass()
         for user_data in users_data:

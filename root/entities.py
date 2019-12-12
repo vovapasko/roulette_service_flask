@@ -14,6 +14,7 @@ class Player(Base):
     banks = relationship("Bank", cascade="all, delete", passive_deletes=True)
     casinos = relationship("Casino", cascade="all, delete", passive_deletes=True)
 
+
 class Bank(Base):
     __tablename__ = "bank"
     player_username = Column(String, ForeignKey(Player.player_username, ondelete="cascade"), primary_key=True)
@@ -29,6 +30,7 @@ class Bet(Base):
     won_bet = Column(Boolean, nullable=False)
     bet_time = Column(TIMESTAMP, nullable=False)
     casinos = relationship("Casino", cascade="all, delete", passive_deletes=True)
+
 
 class Casino(Base):
     __tablename__ = "casino"
