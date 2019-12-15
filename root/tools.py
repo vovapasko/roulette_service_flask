@@ -19,7 +19,9 @@ def correct_bet(player_bet, balance):
 
 
 def format_player_bet(money, color, number):
-    return "player bet"
+    if int(number) == 0:
+        return {'money': money, 'number': number}
+    return {'money': money, 'color': color, 'number': number}
 
 
 def generate_bet():

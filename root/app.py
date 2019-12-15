@@ -52,7 +52,6 @@ def login():
     return render_template('login.html', error=error)
 
 
-
 @app.route('/home', methods=['GET', 'POST'])
 def home():
     lst = tools.generate_list()
@@ -70,8 +69,8 @@ def home():
             color = request.form['exampleRadios']
             number = request.form['bet_number']
             player_bet = format_player_bet(player_bet_money, color, number)
-
-            return render_template('play.html', lst=lst, player=player, bet_result=bet_result, player_bet=player_bet)
+            return render_template('play.html', lst=lst, player=player, bet_result=str(bet_result),
+                                   player_bet=str(player_bet))
         else:
             error = 'Wrong number! Bet must be number less than ' + str(balance)
             return render_template('play.html', lst=lst, player=player, error=error)
