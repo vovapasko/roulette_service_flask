@@ -5,6 +5,7 @@ from werkzeug.utils import redirect
 
 from root import tools
 from root.db import Database
+from root.tools import correct_bet
 
 app = Flask(__name__)
 SECRET_KEY = os.urandom(32)
@@ -51,14 +52,26 @@ def login():
     return render_template('login.html', error=error)
 
 
+
 @app.route('/home', methods=['GET', 'POST'])
 def home():
     lst = tools.generate_list()
+    username = session.get('username')
+    balance = db.fetchPlayer(username).balance
+    player = {'username': username, 'balance': balance}
     if request.method == 'POST':
         print(request.form['exampleRadios'])
         print(request.form['bet_number'])
         print(session.get('username'))
-    return render_template('play.html', lst=lst)
+        player_bet = request.form['moneyToBet']
+        print(player_bet)
+        if correct_bet(player_bet, balance):
+            bet_result = "Bet is made!Bet is made!Bet is made!Bet is made!Bet is made!Bet is made!Bet is made!Bet is made!Bet is made!Bet is made!Bet is made!Bet is made!Bet is made!Bet is made!"
+            return render_template('play.html', lst=lst, player=player, bet_result=bet_result)
+        else:
+            error = 'Wrong number! Bet must be number less than ' + str(balance)
+            return render_template('play.html', lst=lst, player=player, error=error)
+    return render_template('play.html', lst=lst, player=player)
 
 
 @app.route('/logout')
