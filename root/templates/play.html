@@ -40,6 +40,13 @@
     <input class="btn btn-default" type="submit" value="Make a bet">
 </form>
 <a href="{{url_for('logout')}}" class="btn btn-danger">Log out</a>
-<p>{{bet_result}}</p>
+<table class="table table-striped">
+    <tbody>
+    <tr>
+        <td>{{player_bet}}</td>
+        <td>Result: {{bet_result}}</td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>
