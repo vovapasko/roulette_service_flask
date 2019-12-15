@@ -1,6 +1,6 @@
 import os
 
-from flask import request, url_for, render_template, Flask
+from flask import request, url_for, render_template, Flask, session
 from werkzeug.utils import redirect
 
 from root import tools
@@ -34,6 +34,7 @@ def welcome():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    print(session.get('username'))
     error = None
     if request.method == 'POST':
         if request.form['username'] == 'admin' and request.form['password'] == 'admin':
@@ -44,8 +45,8 @@ def login():
             user_passw = user_data['password']
             if request.form['username'] == user_login \
                     and request.form['password'] == user_passw:
-                str = request.form['username'] + " + " + request.form['password']
-                return str
+                session['username'] = user_login
+                return redirect('/home')
         error = 'Invalid Credentials. Please try again.'
     return render_template('login.html', error=error)
 
@@ -56,7 +57,14 @@ def home():
     if request.method == 'POST':
         print(request.form['exampleRadios'])
         print(request.form['bet_number'])
+        print(session.get('username'))
     return render_template('play.html', lst=lst)
+
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect('/login')
 
 
 if __name__ == '__main__':
