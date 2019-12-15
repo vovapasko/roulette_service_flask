@@ -3,6 +3,7 @@ import os
 from flask import request, url_for, render_template, Flask
 from werkzeug.utils import redirect
 
+from root import tools
 from root.db import Database
 
 app = Flask(__name__)
@@ -49,9 +50,13 @@ def login():
     return render_template('login.html', error=error)
 
 
-@app.route('/home')
+@app.route('/home', methods=['GET', 'POST'])
 def home():
-    return "home"
+    lst = tools.generate_list()
+    if request.method == 'POST':
+        print(request.form['exampleRadios'])
+        print(request.form['bet_number'])
+    return render_template('play.html', lst=lst)
 
 
 if __name__ == '__main__':
