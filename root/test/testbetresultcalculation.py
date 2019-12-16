@@ -17,25 +17,25 @@ class TestBetResultCalculation(unittest.TestCase):
         bet = {'color': 'black', 'number': 15}
         result = calculate_bet_result(player_bet, bet)
         expected_win = 100
-        actual_win= result['player_win']
+        actual_win = result['player_win']
         self.assertEqual(actual_win, expected_win)
 
     def test_bet_on_color(self):
         player_bet = {'money': 20, 'color': 'black', 'number': 'None'}
-        bet = {'color'}
+        bet = {'color': 'black', 'number': 23}
+        result = calculate_bet_result(player_bet, bet)
+        expected_win = 40
+        actual_win = result['player_win']
+        self.assertEqual(actual_win, expected_win)
+
+    def test_lost_bet_number_color(self):
+        player_bet = {'money': 20, 'color': 'black', 'number': 32}
+        bet = {'color': 'red', 'number': 23}
+        result = calculate_bet_result(player_bet, bet)
+        expected_win = 0
+        actual_win = result['player_win']
+        self.assertEqual(actual_win, expected_win)
+
 
 if __name__ == '__main__':
     unittest.main()
-
-
-
-
-
-
-
-
-
-
-
-
-

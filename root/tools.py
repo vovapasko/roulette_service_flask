@@ -36,7 +36,7 @@ def calculate_bet_result(player_bet, bet):
     elif player_bet['number'] == bet['number'] and player_bet['color'] == bet['color']:
         bet_result['player_win'] *= 5
     elif player_bet['color'] == bet['color'] and player_bet['number'] == 'None':
-        bet_result *= 2
+        bet_result['player_win'] *= 2
     else:
         bet_result['player_win'] = 0
     return bet_result
