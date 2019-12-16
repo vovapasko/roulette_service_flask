@@ -47,6 +47,8 @@ def login():
             if request.form['username'] == user_login \
                     and request.form['password'] == user_passw:
                 session['username'] = user_login
+                balance = db.fetchPlayer(user_login).balance
+                session['player_balance'] = balance
                 return redirect('/home')
         error = 'Invalid Credentials. Please try again.'
     return render_template('login.html', error=error)
@@ -56,8 +58,7 @@ def login():
 def home():
     lst = tools.generate_list()
     username = session.get('username')
-    balance = db.fetchPlayer(username).balance
-    session['player_balance'] = balance
+    balance = session['player_balance']
     player = {'username': username, 'balance': balance}
     if request.method == 'POST':
         player_bet_money = request.form['moneyToBet']

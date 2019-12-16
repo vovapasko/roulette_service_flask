@@ -42,6 +42,6 @@ def calculate_bet_result(player_bet, bet):
     elif player_bet['color'] == bet['color'] and player_bet['number'] == 'None':
         bet_result['player_win'] *= 2
     else:
-        bet_result['player_win'] -= player_bet[
+        bet_result['player_win'] = -player_bet[
             'money']  # means that player lost his money and his bet money should be subtracted from his balance
     return bet_result
