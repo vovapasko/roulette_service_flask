@@ -38,6 +38,14 @@ class Database():
         session.commit()
         print("Player updated successfully!")
 
+    def updatePlayerBalance(self, player_username, new_balance):
+        session = Session(bind=self.connection)
+        dataToUpdate = {Player.balance: new_balance}
+        playerData = session.query(Player).filter(Player.player_username == player_username)
+        playerData.update(dataToUpdate)
+        session.commit()
+        print("Player's balance updated successfully!")
+
     def fetchAllPlayers(self):
         self.session = Session(bind=self.connection)
         players = self.session.query(Player).all()
