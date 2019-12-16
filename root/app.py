@@ -67,7 +67,7 @@ def home():
             player_bet = format_player_bet(player_bet_money, color, number)
             bet_result = calculate_bet_result(player_bet, bet)
             return render_template('play.html', lst=lst, player=player, bet=str(bet),
-                                   player_bet=str(player_bet))
+                                   player_bet=str(player_bet), bet_result=str(bet_result))
         else:
             error = 'Wrong number! Bet must be number less than ' + str(balance)
             return render_template('play.html', lst=lst, player=player, error=error)
