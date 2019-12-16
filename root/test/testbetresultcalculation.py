@@ -32,10 +32,14 @@ class TestBetResultCalculation(unittest.TestCase):
         player_bet = {'money': 20, 'color': 'black', 'number': 32}
         bet = {'color': 'red', 'number': 23}
         result = calculate_bet_result(player_bet, bet)
-        expected_win = 0
+        expected_win = -20
         actual_win = result['player_win']
         self.assertEqual(actual_win, expected_win)
 
+    def test(self):
+        player_bet = {'money': '12', 'color': 'black', 'number': 'None'}
+        bet = {'color': 'black', 'number': 20}
+        bet_res = calculate_bet_result(player_bet, bet)
 
 if __name__ == '__main__':
     unittest.main()

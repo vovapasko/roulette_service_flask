@@ -4,9 +4,9 @@ from random import randrange
 
 def generate_list():
     lst = []
+    lst.append("None")
     for i in range(37):
         lst.append(str(i))
-    lst.append("None")
     return lst
 
 
@@ -19,7 +19,11 @@ def correct_bet(player_bet, balance):
 
 
 def format_player_bet(money, color, number):
-    return {'money': money, 'color': color, 'number': number}
+    try:
+        int_number = int(number)
+    except ValueError:
+        return {'money': float(money), 'color': color, 'number': number}
+    return {'money': float(money), 'color': color, 'number': int_number}
 
 
 def generate_bet():
@@ -38,5 +42,6 @@ def calculate_bet_result(player_bet, bet):
     elif player_bet['color'] == bet['color'] and player_bet['number'] == 'None':
         bet_result['player_win'] *= 2
     else:
-        bet_result['player_win'] = 0
+        bet_result['player_win'] -= player_bet[
+            'money']  # means that player lost his money and his bet money should be subtracted from his balance
     return bet_result

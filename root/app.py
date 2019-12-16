@@ -57,6 +57,7 @@ def home():
     lst = tools.generate_list()
     username = session.get('username')
     balance = db.fetchPlayer(username).balance
+    session['player_balance'] = balance
     player = {'username': username, 'balance': balance}
     if request.method == 'POST':
         player_bet_money = request.form['moneyToBet']
@@ -66,6 +67,9 @@ def home():
             number = request.form['bet_number']
             player_bet = format_player_bet(player_bet_money, color, number)
             bet_result = calculate_bet_result(player_bet, bet)
+            new_balance = balance + bet_result['player_win']
+            player = {'username': username, 'balance': new_balance}
+            session['player_balance'] = new_balance
             return render_template('play.html', lst=lst, player=player, bet=str(bet),
                                    player_bet=str(player_bet), bet_result=str(bet_result))
         else:
@@ -76,7 +80,11 @@ def home():
 
 @app.route('/logout')
 def logout():
+    username = session['username']
+    new_balance = session['player_balance']
+    db.updatePlayerBalance(username, new_balance)
     session.pop('username', None)
+    session.pop('player_balance', None)
     return redirect('/login')
 
 
