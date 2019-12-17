@@ -1,10 +1,12 @@
 # creates data in db using sqlalchemy
 from root.db import Database
-from root.entities import Base, Player, Bank, Bet, Casino, Country
+from root.entities import Base, Player, Bank, Bet, Casino
 import psycopg2
 
 db = Database()
 Base.metadata.create_all(db.engine)
+
+db.updatePlayerBalance('pashazopin1', 4)
 
 # player1 = Player(player_username='pashazopin1', balance=120, passwrd='passw')
 # player2 = Player(player_username='pashazopin2', balance=220, passwrd='mypassw')

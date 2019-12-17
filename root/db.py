@@ -7,6 +7,8 @@ from sqlalchemy.orm import Session
 import root.credentials
 from root.entities import Player, Bet, Bank, Casino
 
+from sqlalchemy import update
+
 
 class Database():
     # replace the user, password, hostname and database according to your configuration according to your information
@@ -44,6 +46,9 @@ class Database():
         playerData = session.query(Player).filter(Player.player_username == player_username)
         playerData.update(dataToUpdate)
         session.commit()
+        # player = self.session.query(Player).filter(Player.player_username == player_username).first()
+        # player.balance = new_balance
+        # self.session.commit()
         print("Player's balance updated successfully!")
 
     def fetchAllPlayers(self):
