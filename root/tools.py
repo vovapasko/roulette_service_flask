@@ -1,5 +1,6 @@
-import random
-from random import randrange
+from random import randrange, choice
+from functools import wraps
+from flask import session, redirect, url_for, request
 
 
 def generate_list():
@@ -28,7 +29,7 @@ def format_player_bet(money, color, number):
 
 def generate_bet():
     colors = ['black', 'red']
-    color = random.choice(colors)
+    color = choice(colors)
     number = randrange(37)
     return {'color': color, 'number': number}
 
@@ -45,3 +46,11 @@ def calculate_bet_result(player_bet, bet):
         bet_result['player_win'] = -player_bet[
             'money']  # means that player lost his money and his bet money should be subtracted from his balance
     return bet_result
+
+def login_required(route):
+    @wraps(route)
+    def _(*args, **kwargs):
+        if session.get('username') is None:
+            return redirect(url_for('login', next=request.url))
+        return route(*args, **kwargs)
+    return _

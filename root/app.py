@@ -3,28 +3,28 @@ import os
 from flask import request, url_for, render_template, Flask, session
 from werkzeug.utils import redirect
 
-from root import tools
-from root.db import Database
-from root.tools import correct_bet, generate_bet, format_player_bet, calculate_bet_result
+from db import Database
+from tools import correct_bet, generate_bet, format_player_bet, \
+	calculate_bet_result, generate_list, login_required
 
 app = Flask(__name__)
 SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
 
 db = Database()
-app.config[
-    'SQLALCHEMY_DATABASE_URI'] = db.cstr
+app.config['SQLALCHEMY_DATABASE_URI'] = db.cstr
 
 
 # Route for handling the login page logic
 def get_users_log_pass():
-    users = db.fetchAllPlayers()
     users_data = []
-    for user in users:
-        user_dict = dict()
-        user_dict["player_id"] = user.player_username
-        user_dict["password"] = user.passwrd
-        users_data.append(user_dict)
+    with db:
+        users = db.fetchAllPlayers()
+        for user in users:
+            user_dict = dict()
+            user_dict["player_id"] = user.player_username
+            user_dict["password"] = user.passwrd
+            users_data.append(user_dict)
     return users_data
 
 
@@ -47,16 +47,17 @@ def login():
             if request.form['username'] == user_login \
                     and request.form['password'] == user_passw:
                 session['username'] = user_login
-                balance = db.fetchPlayer(user_login).balance
-                session['player_balance'] = balance
+                with db:
+                    balance = db.fetchPlayer(user_login).balance
+                    session['player_balance'] = balance
                 return redirect('/home')
         error = 'Invalid Credentials. Please try again.'
     return render_template('login.html', error=error)
 
-
 @app.route('/home', methods=['GET', 'POST'])
+@login_required
 def home():
-    lst = tools.generate_list()
+    lst = generate_list()
     username = session.get('username')
     balance = session['player_balance']
     player = {'username': username, 'balance': balance}
@@ -80,10 +81,12 @@ def home():
 
 
 @app.route('/logout')
+@login_required
 def logout():
     username = session['username']
     new_balance = int(session['player_balance'])
-    db.updatePlayerBalance(username, new_balance)
+    with db:
+        db.updatePlayerBalance(username, new_balance)
     session.pop('username', None)
     session.pop('player_balance', None)
     return redirect('/login')
