@@ -60,7 +60,7 @@ def login():
 def home():
     lst = generate_list()
     username = session.get('username')
-    balance = session['player_balance']
+    balance = session.get('player_balance')
     print("In begin of home")
     print(session.get('username'))
     print(session.get('player_balance'))
