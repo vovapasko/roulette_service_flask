@@ -30,7 +30,7 @@ def get_users_log_pass():
 
 @app.route('/')
 def welcome():
-    return render_template('hello.html')
+    return redirect('login')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -92,6 +92,10 @@ def logout():
     session.pop('player_balance', None)
     return redirect('/login')
 
+
+@app.route('/register')
+def register():
+    return "Here comes register page"
 
 if __name__ == '__main__':
     app.run(debug=True)
