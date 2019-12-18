@@ -94,8 +94,8 @@ def home():
 
 @app.route('/logout')
 def logout():
-    username = session['username']
-    new_balance = int(session['player_balance'])
+    username = session.get('username')
+    new_balance = int(session.get('player_balance'))
     with db:
         db.updatePlayerBalance(username, new_balance)
     session.pop('username', None)
