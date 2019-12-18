@@ -3,9 +3,9 @@ import os
 from flask import request, url_for, render_template, Flask, session
 from werkzeug.utils import redirect
 
-from db import Database
-from tools import correct_bet, generate_bet, format_player_bet, \
-	calculate_bet_result, generate_list, login_required
+from root.db import Database
+from root.tools import correct_bet, generate_bet, format_player_bet, \
+    calculate_bet_result, generate_list, login_required
 
 app = Flask(__name__)
 SECRET_KEY = os.urandom(32)
@@ -53,6 +53,7 @@ def login():
                 return redirect('/home')
         error = 'Invalid Credentials. Please try again.'
     return render_template('login.html', error=error)
+
 
 @app.route('/home', methods=['GET', 'POST'])
 @login_required
