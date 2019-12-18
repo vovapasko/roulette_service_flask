@@ -5,7 +5,8 @@ from werkzeug.utils import redirect
 
 from root.db import Database
 from root.tools import correct_bet, generate_bet, format_player_bet, \
-    calculate_bet_result, generate_list, login_required
+    calculate_bet_result, generate_list
+from functools import wraps
 
 app = Flask(__name__)
 SECRET_KEY = os.urandom(32)
@@ -26,6 +27,18 @@ def get_users_log_pass():
             user_dict["password"] = user.passwrd
             users_data.append(user_dict)
     return users_data
+
+
+def login_required(route):
+    @wraps(route)
+    def _(*args, **kwargs):
+        print("In login required")
+        print(session.get('username'))
+        if session.get('username') is None:
+            return redirect(url_for('login', next=request.url))
+        return route(*args, **kwargs)
+
+    return _
 
 
 @app.route('/')
@@ -107,6 +120,7 @@ def logout():
 @app.route('/register')
 def register():
     return "Here comes register page"
+
 
 
 if __name__ == '__main__':
