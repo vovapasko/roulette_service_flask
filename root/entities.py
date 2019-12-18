@@ -24,7 +24,7 @@ class Bank(Base):
 
 class Bet(Base):
     __tablename__ = "bet"
-    bet_id = Column(Integer, primary_key=True)
+    bet_id = Column(Integer, primary_key=True, autoincrement=True)
     bet_money = Column(Float, nullable=False)
     won_money = Column(Float, nullable=False)
     won_bet = Column(Boolean, nullable=False)

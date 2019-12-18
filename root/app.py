@@ -56,7 +56,6 @@ def login():
 
 
 @app.route('/home', methods=['GET', 'POST'])
-@login_required
 def home():
     lst = generate_list()
     username = session.get('username')

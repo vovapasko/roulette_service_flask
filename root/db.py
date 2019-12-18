@@ -2,7 +2,7 @@ import sqlalchemy as db
 from sqlalchemy import MetaData, Table, Column
 from sqlalchemy import create_engine, Column, String, Integer, ForeignKey, Float, Boolean
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, Session
 
 import root.credentials as credentials
 from root.entities import Player, Bet, Bank, Casino
