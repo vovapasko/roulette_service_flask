@@ -61,13 +61,18 @@ def home():
     lst = generate_list()
     username = session.get('username')
     balance = session['player_balance']
-    print(username)
-    print(balance)
+    print("In begin of home")
+    print(session.get('username'))
+    print(session.get('player_balance'))
     player = {'username': username, 'balance': balance}
     if request.method == 'POST':
         player_bet_money = request.form['moneyToBet']
+        print(username)
+        print(balance)
         if correct_bet(player_bet_money, balance):
-            print("I am in bet")
+            print("In if")
+            print(session.get('username'))
+            print(session.get('player_balance'))
             bet = generate_bet()
             color = request.form['exampleRadios']
             number = request.form['bet_number']
@@ -81,6 +86,9 @@ def home():
         else:
             error = 'Wrong number! Bet must be number less than ' + str(balance)
             return render_template('play.html', lst=lst, player=player, error=error)
+    print("In the end of home")
+    print(session.get('username'))
+    print(session.get('player_balance'))
     return render_template('play.html', lst=lst, player=player)
 
 
