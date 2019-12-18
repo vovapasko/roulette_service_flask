@@ -61,10 +61,13 @@ def home():
     lst = generate_list()
     username = session.get('username')
     balance = session['player_balance']
+    print(username)
+    print(balance)
     player = {'username': username, 'balance': balance}
     if request.method == 'POST':
         player_bet_money = request.form['moneyToBet']
         if correct_bet(player_bet_money, balance):
+            print("I am in bet")
             bet = generate_bet()
             color = request.form['exampleRadios']
             number = request.form['bet_number']
