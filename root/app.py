@@ -29,18 +29,6 @@ def get_users_log_pass():
     return users_data
 
 
-def login_required(route):
-    @wraps(route)
-    def _(*args, **kwargs):
-        print("In login required")
-        print(session.get('username'))
-        if session.get('username') is None:
-            return redirect(url_for('login', next=request.url))
-        return route(*args, **kwargs)
-
-    return _
-
-
 @app.route('/')
 def welcome():
     return redirect('login')
@@ -69,7 +57,6 @@ def login():
 
 
 @app.route('/home', methods=['GET', 'POST'])
-@login_required
 def home():
     lst = generate_list()
     username = session.get('username')
@@ -106,7 +93,6 @@ def home():
 
 
 @app.route('/logout')
-@login_required
 def logout():
     username = session['username']
     new_balance = int(session['player_balance'])
@@ -120,7 +106,6 @@ def logout():
 @app.route('/register')
 def register():
     return "Here comes register page"
-
 
 
 if __name__ == '__main__':
