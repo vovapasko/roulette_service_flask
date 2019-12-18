@@ -51,6 +51,8 @@ def calculate_bet_result(player_bet, bet):
 def login_required(route):
     @wraps(route)
     def _(*args, **kwargs):
+        print("In login required")
+        print(session.get('username'))
         if session.get('username') is None:
             return redirect(url_for('login', next=request.url))
         return route(*args, **kwargs)
