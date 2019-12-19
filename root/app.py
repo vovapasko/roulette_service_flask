@@ -39,7 +39,7 @@ def login():
     error = None
     if request.method == 'POST':
         print(f"inside post method of login function")
-        print(session['username'])
+        print(session.get('username'))
         if request.form['username'] == 'admin' and request.form['password'] == 'admin':
             return redirect("https://super-app-150.herokuapp.com/")
         users_data = get_users_log_pass()
