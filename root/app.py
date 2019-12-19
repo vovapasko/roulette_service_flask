@@ -15,6 +15,7 @@ app.config['SECRET_KEY'] = SECRET_KEY
 db = Database()
 app.config['SQLALCHEMY_DATABASE_URI'] = db.cstr
 
+
 # Route for handling the login page logic
 def get_users_log_pass():
     users_data = []
@@ -67,23 +68,12 @@ def login():
 @login_required
 def home():
     lst = generate_list()
-    print(f"inside home function before game")
-    print(session.get('username'))
-    print(session.get('player_balance'))
     username = session.get('username')
     balance = session.get('player_balance')
     player = {'username': username, 'balance': balance}
     if request.method == 'POST':
         player_bet_money = request.form['moneyToBet']
-        print("inside post method home function. bet is done")
-        print(username)
-        print(balance)
-        print(session.get('username'))
-        print(session.get('player_balance'))
         if correct_bet(player_bet_money, balance):
-            print("Bet is correct. inside if correct bet")
-            print(session.get('username'))
-            print(session.get('player_balance'))
             bet = generate_bet()
             color = request.form['exampleRadios']
             number = request.form['bet_number']
@@ -95,23 +85,14 @@ def home():
             return render_template('play.html', lst=lst, player=player, bet=str(bet),
                                    player_bet=str(player_bet), bet_result=str(bet_result))
         else:
-            print("In else method. Bet is incorrect")
-            print(session.get('username'))
-            print(session.get('player_balance'))
             error = 'Wrong number! Bet must be number less than ' + str(balance)
             return render_template('play.html', lst=lst, player=player, error=error)
-    print("In the end of home")
-    print(session.get('username'))
-    print(session.get('player_balance'))
     return render_template('play.html', lst=lst, player=player)
 
 
 @app.route('/logout')
 @login_required
 def logout():
-    print("In logout method")
-    print(session.get('username'))
-    print(session.get('player_balance'))
     username = session.get('username')
     new_balance = int(session.get('player_balance'))
     with db:
@@ -123,7 +104,7 @@ def logout():
 
 @app.route('/register')
 def register():
-    return "Here comes register page"
+    return render_template("register.html")
 
 
 if __name__ == '__main__':
