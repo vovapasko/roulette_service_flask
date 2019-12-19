@@ -1,11 +1,14 @@
 import os
+import traceback
+from datetime import datetime
 
 from flask import request, url_for, render_template, Flask, session
 from werkzeug.utils import redirect
 
 from root.db import Database
+from root.entities import Bet
 from root.tools import correct_bet, generate_bet, format_player_bet, \
-    calculate_bet_result, generate_list, login_required
+    calculate_bet_result, generate_list, login_required, get_bet_id, generateBetForDb, generateCasinoData
 from functools import wraps
 
 app = Flask(__name__)
@@ -47,9 +50,6 @@ def login():
             if request.form['username'] == user_login \
                     and request.form['password'] == user_passw:
                 session['username'] = user_login
-                with db:
-                    balance = db.fetchPlayer(user_login).balance
-                    session['player_balance'] = balance
                 return redirect('/home')
         error = 'Invalid Credentials. Please try again.'
     return render_template('login.html', error=error)
@@ -60,7 +60,7 @@ def login():
 def home():
     lst = generate_list()
     username = session.get('username')
-    balance = session.get('player_balance')
+    balance = db.fetchPlayer(username).balance
     player = {'username': username, 'balance': balance}
     if request.method == 'POST':
         player_bet_money = request.form['moneyToBet']
@@ -70,9 +70,15 @@ def home():
             number = request.form['bet_number']
             player_bet = format_player_bet(player_bet_money, color, number)
             bet_result = calculate_bet_result(player_bet, bet)
+            new_bet_obj = generateBetForDb(player_bet, bet_result)
+            new_casino_obj = generateCasinoData(username, new_bet_obj.bet_id)
+            with db:
+                db.createBet(new_bet_obj)
+                db.createCasino(new_casino_obj)
             new_balance = balance + bet_result['player_win']
             player = {'username': username, 'balance': new_balance}
-            session['player_balance'] = new_balance
+            with db:
+                db.updatePlayerBalance(username, new_balance)
             return render_template('play.html', lst=lst, player=player, bet=str(bet),
                                    player_bet=str(player_bet), bet_result=str(bet_result))
         else:
@@ -84,12 +90,7 @@ def home():
 @app.route('/logout')
 @login_required
 def logout():
-    username = session.get('username')
-    new_balance = int(session.get('player_balance'))
-    with db:
-        db.updatePlayerBalance(username, new_balance)
     session.pop('username', None)
-    session.pop('player_balance', None)
     return redirect('/login')
 
 

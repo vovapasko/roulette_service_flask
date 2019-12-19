@@ -59,9 +59,6 @@ class Database():
         dataToUpdate = {Player.balance: new_balance}
         playerData = self.session.query(Player).filter(Player.player_username == player_username)
         playerData.update(dataToUpdate)
-        # player = self.session.query(Player).filter(Player.player_username == player_username).first()
-        # player.balance = new_balance
-        # self.session.commit()
         print("Player's balance updated successfully!")
 
     def fetchAllPlayers(self):
