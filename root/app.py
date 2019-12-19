@@ -60,7 +60,8 @@ def login():
 def home():
     lst = generate_list()
     username = session.get('username')
-    balance = db.fetchPlayer(username).balance
+    with db:
+        balance = db.fetchPlayer(username).balance
     player = {'username': username, 'balance': balance}
     if request.method == 'POST':
         player_bet_money = request.form['moneyToBet']
