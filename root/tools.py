@@ -47,3 +47,12 @@ def calculate_bet_result(player_bet, bet):
             'money']  # means that player lost his money and his bet money should be subtracted from his balance
     return bet_result
 
+
+def login_required(route):
+    @wraps(route)
+    def _(*args, **kwargs):
+        if session.get('username') is None:
+            return redirect(url_for('login', next=request.url))
+        return route(*args, **kwargs)
+
+    return _

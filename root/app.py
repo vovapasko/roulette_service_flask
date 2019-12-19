@@ -5,7 +5,7 @@ from werkzeug.utils import redirect
 
 from root.db import Database
 from root.tools import correct_bet, generate_bet, format_player_bet, \
-    calculate_bet_result, generate_list
+    calculate_bet_result, generate_list, login_required
 from functools import wraps
 
 app = Flask(__name__)
@@ -64,6 +64,7 @@ def login():
 
 
 @app.route('/home', methods=['GET', 'POST'])
+@login_required
 def home():
     lst = generate_list()
     print(f"inside home function before game")
@@ -106,6 +107,7 @@ def home():
 
 
 @app.route('/logout')
+@login_required
 def logout():
     print("In logout method")
     print(session.get('username'))
