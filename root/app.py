@@ -36,29 +36,20 @@ def welcome():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    print(f"at the beginning of login function {session.get('username')}")
     error = None
     if request.method == 'POST':
-        print(f"inside post method of login function")
-        print(session.get('username'))
         if request.form['username'] == 'admin' and request.form['password'] == 'admin':
             return redirect("https://super-app-150.herokuapp.com/")
         users_data = get_users_log_pass()
         for user_data in users_data:
-            print(f"inside post method of login function with users {session.get('username')}")
             user_login = user_data['player_id']
             user_passw = user_data['password']
             if request.form['username'] == user_login \
                     and request.form['password'] == user_passw:
-                print(f"inside post method of login function with users init complete {session.get('username')}")
-                print("Before saving data to session")
                 session['username'] = user_login
                 with db:
                     balance = db.fetchPlayer(user_login).balance
                     session['player_balance'] = balance
-                print("Saved data to session")
-                print(session.get('username'))
-                print(session.get('player_balance'))
                 return redirect('/home')
         error = 'Invalid Credentials. Please try again.'
     return render_template('login.html', error=error)

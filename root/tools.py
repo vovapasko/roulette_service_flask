@@ -1,6 +1,7 @@
 from random import randrange, choice
 from functools import wraps
 from flask import session, redirect, url_for, request
+import uuid
 
 
 def generate_list():
@@ -56,3 +57,7 @@ def login_required(route):
         return route(*args, **kwargs)
 
     return _
+
+
+def get_bet_id():
+    return str(uuid.uuid4())

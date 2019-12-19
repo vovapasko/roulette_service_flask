@@ -24,15 +24,17 @@ class Bank(Base):
 
 class Bet(Base):
     __tablename__ = "bet"
-    bet_id = Column(Integer, primary_key=True, autoincrement=True)
+    bet_id = Column(String, primary_key=True)
     bet_money = Column(Float, nullable=False)
     won_money = Column(Float, nullable=False)
     won_bet = Column(Boolean, nullable=False)
     bet_time = Column(TIMESTAMP, nullable=False)
+    bet_color = Column(String, nullable=False)
+    bet_number = Column(Integer, nullable=True)
     casinos = relationship("Casino", cascade="all, delete", passive_deletes=True)
 
 
 class Casino(Base):
     __tablename__ = "casino"
     player_username = Column(String, ForeignKey(Player.player_username, ondelete="cascade"), primary_key=True)
-    bet_id = Column(Integer, ForeignKey(Bet.bet_id, ondelete="cascade"), primary_key=True)
+    bet_id = Column(String, ForeignKey(Bet.bet_id, ondelete="cascade"), primary_key=True)
