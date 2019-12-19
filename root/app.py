@@ -9,7 +9,7 @@ from root.tools import correct_bet, generate_bet, format_player_bet, \
 from functools import wraps
 
 app = Flask(__name__)
-SECRET_KEY = os.urandom(32)
+SECRET_KEY = "Secret key"
 app.config['SECRET_KEY'] = SECRET_KEY
 
 db = Database()

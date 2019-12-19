@@ -1,1 +1,1 @@
-root.app:app --log-file -
+web: gunicorn root.app:app --log-file -
