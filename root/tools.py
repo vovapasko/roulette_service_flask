@@ -91,8 +91,10 @@ def generateBetForDb(player_bet, bet_result):
         traceback.print_exc()
         return None
 
+
 def get_current_time():
     return datetime.now().strftime("%Y-%m-%d %X")
+
 
 def generateCasinoData(username, bet_id):
     return Casino(player_username=username, bet_id=bet_id)
@@ -109,5 +111,9 @@ def correct_login(users_data, request):
     return False
 
 
-def correct_signup():
-    pass
+def validate_money(money):
+    try:
+        float_money = float(money)
+    except ValueError:
+        return False
+    return float_money > 0

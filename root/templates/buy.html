@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Buy chips</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <!------ Include the above in your HEAD tag ---------->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+<body>
+<div class="sidenav">
+    <div class="login-main-text">
+        <h2>Out of money?</h2>
+        <p></p>
+        <p>No problem. You can get it here</p>
+    </div>
+</div>
+<div class="main">
+    <div class="col-md-6 col-sm-12">
+        <div class="login-form">
+
+            {% if error %}
+            <p class="error"><strong>Error:</strong> {{ error }}
+                {% endif %}
+            <form method="post" action="/buy_chips">
+
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1">How much money do you want?</label>
+                    <textarea class="form-control" name="moneyToBuy" id="exampleFormControlTextarea1" rows="1">{{request.form.moneyToBuy}}</textarea>
+                </div>
+                <button type="submit" class="btn btn-black" value="buy_chips">Buy</button>
+
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+
+</body>
+</html>

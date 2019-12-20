@@ -9,7 +9,7 @@ from root.db import Database
 from root.entities import Bet, Player, Bank
 from root.tools import correct_bet, generate_bet, format_player_bet, \
     calculate_bet_result, generate_list, login_required, get_bet_id, generateBetForDb, generateCasinoData, \
-    correct_login, get_current_time
+    correct_login, get_current_time, validate_money
 from functools import wraps
 
 app = Flask(__name__)
@@ -116,6 +116,28 @@ def register():
         session['username'] = user_new_username
         return redirect('home')
     return render_template("register.html", error=error)
+
+
+@app.route('/buy_chips', methods=['GET', 'POST'])
+@login_required
+def buy_chips():
+    error = None
+    if request.method == 'POST':
+        moneyToBuy = request.form['moneyToBuy']
+        if validate_money(moneyToBuy):
+            username = session.get('username')
+            time_to_sell = get_current_time()
+            new_bank = Bank(player_username=username, sold_time=time_to_sell,
+                            sold_coins=moneyToBuy)
+            with db:
+                current_balance = db.fetchPlayer(username).balance
+                new_balance = current_balance + moneyToBuy
+                db.updatePlayerBalance(username, new_balance)
+                db.createBank(new_bank)
+            return redirect('home')
+        else:
+            error = "Value must be positive integer"
+    return render_template('buy.html', error=error)
 
 
 @app.route('/player_history')
