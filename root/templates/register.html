@@ -1,65 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <title>TALHA</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <title>Login Page</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <!------ Include the above in your HEAD tag ---------->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/register_style.css') }}">
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
 </head>
 <body>
 
-<nav class="navbar navbar-inverse">
-    <div class="container-fluid">
-        <div class="navbar-header">
-
-            <a class="navbar-brand" href="{{url_for('login')}}">Azino</a>
-
-        </div>
-        <div class="collapse navbar-collapse" id="myNavbar">
-
-            <ul class="nav navbar-nav navbar-right">
-
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <p class="navbar-brand">Become the part of us</p>
-
-                </div>
-            </ul>
-        </div>
-    </div>
-</nav>
-
-
-<div>
-    <div class="container">
-        <div class="col-md-6">
-            <div id="logbox">
-                <form id="signup" method="post" action="/signup">
-                    <h1>Create an Account</h1>
-                    <input name="new_username" type="text" placeholder="Choose your unique username" class="input pass"
-                           value="{{request.form.new_username}}"/>
-                    <input name="new_user_password" type="password" placeholder="Choose a password" required="required"
-                           class="input pass"/>
-                    <input name="new_user_password2" type="password" placeholder="Confirm password" required="required"
-                           class="input pass"/>
-                    <input type="submit" value="Sign me up!" class="inputButton"/>
-
-                </form>
-            </div>
-        </div>
-        <!--col-md-6-->
-
-
+<div class="sidenav">
+    <div class="login-main-text">
+        <h2>Welcome to Azino <br> Start earning 700 per hour with us</h2>
+        <p></p>
+        <p>Each week world gets one new millionaire<br>
+            Register or log in to play. Maybe you are the new one...</p>
     </div>
 </div>
+<div class="main">
+    <div class="col-md-6 col-sm-12">
+        <div class="login-form">
 
+            {% if error %}
+            <p class="error"><strong>Error:</strong> {{ error }}
+                {% endif %}
+            <form id="signup" method="post" action="/signup">
+                <h1>Create an Account</h1>
+                <div class="form-group">
+                    <label>Choose your unique username</label>
+                    <input name="new_username" type="text" placeholder="Username" class="form-control"
+                           value="{{request.form.new_username}}"/>
+                </div>
+                <div class="form-group">
+                    <label>Choose a password</label>
+                    <input name="new_user_password" type="password" placeholder="password"
+                           required="required"
+                           class="form-control"/>
+                </div>
+                <div class="form-group">
+                    <label>Confirm a password</label>
+                    <input name="new_user_password2" type="password" placeholder="confirm password"
+                           required="required"
+                           class="form-control"/>
+                </div>
+                <button type="submit" value="Sign-up!" class="btn btn-black">Sign up</button>
+
+            </form>
+
+        </div>
+    </div>
+</div>
 </body>
 </html>
