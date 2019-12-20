@@ -4,11 +4,19 @@
     <meta charset="UTF-8">
     <title>Welcome</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/play_style.css') }}">
+
 
 </head>
 <body>
-<p>Welcome to the game, {{player.username}}!</p>
-<p>Your balance is {{player.balance}}</p>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <label class="navbar-brand">{{player.username}}</label>
+    <label class="navbar-brand">Your balance is {{player.balance}}</label>
+    <a class="btn btn-light" href="{{url_for('player_stat')}}">Statistics</a>
+    <a href="{{url_for('logout')}}" class="btn btn-danger">Log out</a>
+</nav>
+
+
 <p>Please make your bet</p>
 <form action="/home" method="post">
     <div class="form-check">
@@ -39,7 +47,6 @@
     </div>
     <input class="btn btn-success" type="submit" value="Make a bet">
 </form>
-<a href="{{url_for('logout')}}" class="btn btn-danger">Log out</a>
 <table class="table table-striped">
     <tbody>
     <tr>

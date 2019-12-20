@@ -113,5 +113,10 @@ def register():
     return render_template("register.html", error=error)
 
 
+@app.route('/player_stat')
+def player_stat():
+    return "Here comes the stat"
+
+
 if __name__ == '__main__':
     app.run(debug=True)
