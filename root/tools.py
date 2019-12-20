@@ -21,7 +21,7 @@ def correct_bet(player_bet, balance):
         float_bet = float(player_bet)
     except ValueError:
         return False
-    return float_bet <= balance
+    return 0 < float_bet <= balance
 
 
 def format_player_bet(money, color, number):
@@ -105,6 +105,7 @@ def correct_login(users_data, request):
             session['username'] = user_login
             return True
     return False
+
 
 def correct_signup():
     pass
