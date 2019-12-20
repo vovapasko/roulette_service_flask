@@ -94,3 +94,17 @@ def generateBetForDb(player_bet, bet_result):
 
 def generateCasinoData(username, bet_id):
     return Casino(player_username=username, bet_id=bet_id)
+
+
+def correct_login(users_data, request):
+    for user_data in users_data:
+        user_login = user_data['player_id']
+        user_passw = user_data['password']
+        if request.form['username'] == user_login \
+                and request.form['password'] == user_passw:
+            session['username'] = user_login
+            return True
+    return False
+
+def correct_signup():
+    pass

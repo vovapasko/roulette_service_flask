@@ -6,9 +6,9 @@ from flask import request, url_for, render_template, Flask, session
 from werkzeug.utils import redirect
 
 from root.db import Database
-from root.entities import Bet
+from root.entities import Bet, Player
 from root.tools import correct_bet, generate_bet, format_player_bet, \
-    calculate_bet_result, generate_list, login_required, get_bet_id, generateBetForDb, generateCasinoData
+    calculate_bet_result, generate_list, login_required, get_bet_id, generateBetForDb, generateCasinoData, correct_login
 from functools import wraps
 
 app = Flask(__name__)
@@ -44,13 +44,8 @@ def login():
         if request.form['username'] == 'admin' and request.form['password'] == 'admin':
             return redirect("https://super-app-150.herokuapp.com/")
         users_data = get_users_log_pass()
-        for user_data in users_data:
-            user_login = user_data['player_id']
-            user_passw = user_data['password']
-            if request.form['username'] == user_login \
-                    and request.form['password'] == user_passw:
-                session['username'] = user_login
-                return redirect('/home')
+        if correct_login(users_data, request):
+            return redirect('/home')
         error = 'Invalid Credentials. Please try again.'
     return render_template('login.html', error=error)
 
@@ -95,9 +90,27 @@ def logout():
     return redirect('/login')
 
 
-@app.route('/register')
+@app.route('/register', methods=['GET', 'POST'])
 def register():
-    return render_template("register.html")
+    error = None
+    if request.method == 'POST':
+        users_data = get_users_log_pass()
+        user_new_username = request.form['new_username']
+        for user_data in users_data:
+            if user_data['player_id'] == user_new_username:
+                error = "This username already exists"
+                return render_template("register.html", error=error)
+        new_password = request.form['new_password']
+        new_password1 = request.form['new_password1']
+        if new_password != new_password1:
+            error = "Passwords must match"
+            return render_template("register.html", error=error)
+        new_player = Player(player_username=user_new_username, balance=1000, passwrd=new_password)
+        with db:
+            db.createPlayer(new_player)
+        session['username'] = user_new_username
+        return redirect('home')
+    return render_template("register.html", error=error)
 
 
 if __name__ == '__main__':
