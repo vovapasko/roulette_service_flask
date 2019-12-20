@@ -140,5 +140,9 @@ class Database():
         casinos = self.session.query(Casino).all()
         return casinos
 
+    def fetchAllCasinoPlayerBets(self, player_username):
+        bets = self.session.query(Casino).filter(Casino.player_username == player_username).all()
+        return bets
+
     def close(self):
         self.session.close()

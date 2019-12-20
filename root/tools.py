@@ -82,7 +82,7 @@ def generateBetForDb(player_bet, bet_result):
         bet_money = float(player_bet['money'])
         won_money = float(bet_result['player_win'])
         won_bet = bet_result['bet_win']
-        bet_time = datetime.now().strftime("%Y-%m-%d %X")
+        bet_time = get_current_time()
         bet_color = player_bet['color']
         bet_number = handleBetNumber(player_bet)
         return Bet(bet_id=bet_id, bet_money=bet_money, won_money=won_money, won_bet=won_bet,
@@ -91,6 +91,8 @@ def generateBetForDb(player_bet, bet_result):
         traceback.print_exc()
         return None
 
+def get_current_time():
+    return datetime.now().strftime("%Y-%m-%d %X")
 
 def generateCasinoData(username, bet_id):
     return Casino(player_username=username, bet_id=bet_id)

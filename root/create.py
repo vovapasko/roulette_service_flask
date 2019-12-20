@@ -48,3 +48,7 @@ Base.metadata.create_all(db.engine)
 #     db.createCasino(casino1)
 #     db.createCasino(casino2)
 #     db.createCasino(casino3)
+
+# with db:
+#     bets = db.fetchAllCasinoPlayerBets('user')
+#     print()

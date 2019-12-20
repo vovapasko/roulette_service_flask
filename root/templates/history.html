@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/play_style.css') }}">
+
+    <title>Your bet's history</title>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <label class="navbar-brand">{{player.username}}</label>
+    <label class="navbar-brand">Your balance is {{player.balance}}</label>
+    <a class="btn btn-light" href="{{url_for('home')}}">Back to game</a>
+    <a href="{{url_for('logout')}}" class="btn btn-danger">Log out</a>
+</nav>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">Bet time</th>
+        <th scope="col">Money on bet</th>
+        <th scope="col">Actual win</th>
+        <th scope="col">Bet won</th>
+        <th scope="col">Bet color</th>
+        <th scope="col">Bet number</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    {% for bet in bets %}
+    <tr>
+        <td>{{bet.bet_time}}</td>
+        <td>{{bet.bet_money}}</td>
+        <td>{{bet.won_money}}</td>
+        <td>{{bet.won_bet}}</td>
+        <td>{{bet.bet_color}}</td>
+        <td>{{bet.bet_number}}</td>
+        <td class="d-flex justify-content-end">
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+
+</body>
+</html>

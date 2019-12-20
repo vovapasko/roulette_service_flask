@@ -6,9 +6,10 @@ from flask import request, url_for, render_template, Flask, session
 from werkzeug.utils import redirect
 
 from root.db import Database
-from root.entities import Bet, Player
+from root.entities import Bet, Player, Bank
 from root.tools import correct_bet, generate_bet, format_player_bet, \
-    calculate_bet_result, generate_list, login_required, get_bet_id, generateBetForDb, generateCasinoData, correct_login
+    calculate_bet_result, generate_list, login_required, get_bet_id, generateBetForDb, generateCasinoData, \
+    correct_login, get_current_time
 from functools import wraps
 
 app = Flask(__name__)
@@ -105,17 +106,32 @@ def register():
         if new_password != new_password1:
             error = "Passwords must match"
             return render_template("register.html", error=error)
-        new_player = Player(player_username=user_new_username, balance=1000, passwrd=new_password)
+        first_money = 1000
+        sold_time = get_current_time()
+        new_player = Player(player_username=user_new_username, balance=first_money, passwrd=new_password)
+        new_bank = Bank(player_username=user_new_username, sold_time=sold_time, sold_coins=first_money)
         with db:
             db.createPlayer(new_player)
+            db.createBank(new_bank)
         session['username'] = user_new_username
         return redirect('home')
     return render_template("register.html", error=error)
 
 
-@app.route('/player_stat')
-def player_stat():
-    return "Here comes the stat"
+@app.route('/player_history')
+@login_required
+def player_history():
+    username = session.get('username')
+    player = {'username': username}
+    bets = []
+    with db:
+        balance = db.fetchPlayer(username).balance
+        betsFromCasino = db.fetchAllCasinoPlayerBets(username)
+        for bet in betsFromCasino:
+            fetched_bet = db.fetchBet(bet.bet_id)
+            bets.append(fetched_bet)
+        player['balance'] = balance
+        return render_template('history.html', bets=bets, player=player)
 
 
 if __name__ == '__main__':
